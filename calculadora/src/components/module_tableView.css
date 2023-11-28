@@ -1,0 +1,12 @@
+.box2{
+    display: flex;
+    background: white;
+    width: 50%;
+}
+
+.table_box{
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    text-align: center;
+}
