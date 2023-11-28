@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from "react";
-import "./module_formulario.css"
+import "./module_formulario.css";
 
 export default function Formulario() {
+  // Definição dos estados para os campos do formulário e os formulários salvos
   const [tipo, setTipo] = useState("despesa");
   const [nome, setNome] = useState("");
   const [valor, setValor] = useState("");
   const [tipoPagamento, setTipoPagamento] = useState("");
   const [formulariosSalvos, setFormulariosSalvos] = useState([]);
 
+  // Efeito para carregar dados do armazenamento local no início
   useEffect(() => {
+    // Obtém os dados do localStorage, se houver
     const formsFromStorage = JSON.parse(localStorage.getItem("formData"));
     if (formsFromStorage) {
+      // Define os formulários salvos no estado
       setFormulariosSalvos(formsFromStorage);
     }
   }, []);
 
+  // Função para lidar com o envio do formulário
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    // Cria um objeto com os dados do formulário atual
     const formData = {
       tipo,
       nome,
@@ -24,19 +31,20 @@ export default function Formulario() {
       tipoPagamento,
     };
 
-    // Atualizar o estado com os formulários salvos anteriormente e adicionar o novo formulário
+    // Atualiza o estado com os formulários salvos e adiciona o novo formulário
     const updatedForms = [...formulariosSalvos, formData];
 
-    // Salvar no localStorage
+    // Salva no localStorage os formulários atualizados
     localStorage.setItem("formData", JSON.stringify(updatedForms));
 
-    // Atualizar o estado para limpar o formulário
+    // Atualiza o estado para limpar o formulário e os campos
     setFormulariosSalvos(updatedForms);
-    setTipo("");
+    setTipo("despesa");
     setNome("");
     setValor("");
     setTipoPagamento("");
 
+    // Recarrega a página para exibir os dados atualizados (poderia ser feito de outra forma, isso é só um exemplo)
     window.location.reload();
   };
 
@@ -44,6 +52,7 @@ export default function Formulario() {
     <div className="box">
       <form onSubmit={handleSubmit}>
         <div>
+          {/* Campo para selecionar o tipo (despesa ou entrada) */}
           <label>
             Tipo:
             <select value={tipo} onChange={(e) => setTipo(e.target.value)}>
@@ -53,6 +62,7 @@ export default function Formulario() {
           </label>
         </div>
         <div>
+          {/* Campo para inserir o nome */}
           <label>
             Nome:
             <input
@@ -63,6 +73,7 @@ export default function Formulario() {
           </label>
         </div>
         <div>
+          {/* Campo para inserir o valor */}
           <label>
             Valor:
             <input
@@ -73,6 +84,7 @@ export default function Formulario() {
           </label>
         </div>
         <div>
+          {/* Campo para inserir o tipo de pagamento */}
           <label>
             Tipo de Pagamento:
             <input
@@ -82,6 +94,7 @@ export default function Formulario() {
             />
           </label>
         </div>
+        {/* Botão para enviar o formulário */}
         <button type="submit">Enviar</button>
       </form>
     </div>
